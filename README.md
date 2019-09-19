@@ -50,7 +50,7 @@ git checkout ScalesSmearing2018_Dev
 cd -
 git cms-merge-topic cms-egamma:EgammaPostRecoTools_dev
 scram b clean 
-scam b distclean 
+scram b distclean 
 scram b -j 8 
 ```
 
