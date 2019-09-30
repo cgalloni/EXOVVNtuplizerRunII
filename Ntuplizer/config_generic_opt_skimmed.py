@@ -1,5 +1,6 @@
 #cmsRun  config_generic_opt_skimmed.py  RunPeriod="Fall17" # for MC
 #cmsRun  config_generic_opt_skimmed.py  RunPeriod="Run2017B" # for Data
+#cmsRun  config_generic_opt_skimmed.py  RunPeriod="Autumn18" # for MC from 2018
 
 
 ###### Process initialization ##########
@@ -41,12 +42,13 @@ options.register( 'runUpToEarlyF',
 
 
 
-options.maxEvents = 100
+options.maxEvents = -1
 
 #data file
      
-options.inputFiles ='file:/work/pmatorra/JpsiAnalysis/2018/CMSSW_10_2_10/src/EXOVVNtuplizerRunII/Ntuplizer/miniAOD_99.root'
+#options.inputFiles ='file:/work/pmatorra/JpsiAnalysis/2018/CMSSW_10_2_10/src/EXOVVNtuplizerRunII/Ntuplizer/miniAOD_99.root'
 #options.inputFiles ='/store/data/Run2018B/Charmonium/MINIAOD/17Sep2018-v1/10000/02CFE87F-7C17-1340-8300-FDA86C16D58C.root'
+options.inputFiles ='/store/user/cgalloni/BJpsiX_MuMu_270819/Autumn18_10_2_9_miniAOD/190827_143312/0005/miniAOD_5000.root'
 
 options.parseArguments()
 
@@ -364,6 +366,8 @@ process.ntuplizer = cms.EDAnalyzer("Ntuplizer",
     doMissingEt       = cms.bool(config["DOMISSINGET"]),
     doMETSVFIT        = cms.bool(config["DOMETSVFIT"]),
     doMVAMET          = cms.bool(config["DOMVAMET"]),
+    doGenHist         = cms.bool(config["DOGENHIST"]),
+    doCutFlow         = cms.bool(config["DOCUTFLOW"]),
   
     vertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
     beamSpot = cms.InputTag("offlineBeamSpot"),

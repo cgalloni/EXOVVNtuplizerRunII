@@ -7,6 +7,7 @@ GenParticlesNtuplizer::GenParticlesNtuplizer( std::vector<edm::EDGetTokenT<reco:
    , genParticlesToken_( tokens[0] )
    , isJpsiMu_( runFlags["doJpsiMu"])
    , isJpsiEle_( runFlags["doJpsiEle"]  )
+   , isGenHist_( runFlags["doGenHist"]  )
 {
 
 }
@@ -19,6 +20,7 @@ GenParticlesNtuplizer::~GenParticlesNtuplizer( void )
 //===================================================================================================================        
 void GenParticlesNtuplizer::fillBranches( edm::Event const & event, const edm::EventSetup& iSetup ){
   //chunk to remove those events with no jspi if that analysis is chosen
+  if (!isGenHist_) {
   std::vector<int> doJpsi_;
   if(isJpsiEle_) {
     doJpsi_ = nBranches_->IsJpsiEle;
@@ -28,6 +30,7 @@ void GenParticlesNtuplizer::fillBranches( edm::Event const & event, const edm::E
     //std::cout<<"nbranch thing\t"<<size(isJpsi_)<<"; "<< isJpsi_[0]<<std::endl;
   }
   if(size(doJpsi_)>0) if(doJpsi_[0]==0) return;
+  }
    
 
     event.getByToken(genParticlesToken_ , genParticles_); 
@@ -85,6 +88,187 @@ void GenParticlesNtuplizer::fillBranches( edm::Event const & event, const edm::E
 	      nDau++;
       }
 
+if ( isGenHist_ ) {
+// Looking At B mesons who decay to Jpsi+X. Catalogue what else they decay to in addition to the Jpsi. Get the particle's pdgid,
+// the pT, eta, and phi of it and the two muons from the jpsi, the jpsi's (aka dimuon) pt, eta, phi, and mass, and the B's
+// Visible pt, eta, phi, and mass
+      if ( (  abs((*genParticles_)[p].pdgId()) == 511
+           || abs((*genParticles_)[p].pdgId()) == 521 
+           || abs((*genParticles_)[p].pdgId()) == 513 
+           || abs((*genParticles_)[p].pdgId()) == 523 
+           || abs((*genParticles_)[p].pdgId()) == 515 
+           || abs((*genParticles_)[p].pdgId()) == 525 
+           || abs((*genParticles_)[p].pdgId()) == 531 
+           || abs((*genParticles_)[p].pdgId()) == 533 
+           || abs((*genParticles_)[p].pdgId()) == 535 
+           || abs((*genParticles_)[p].pdgId()) == 541 
+           || abs((*genParticles_)[p].pdgId()) == 543 
+           || abs((*genParticles_)[p].pdgId()) == 545 )
+         && (*genParticles_)[p].status() == 2 ) {
+         TLorentzVector mu1, mu2, mu3;
+         std::vector<int> mu3pdgid;
+         for (unsigned int d=0; d<(*genParticles_)[p].numberOfDaughters(); ++d ) {
+//             std::cout << p << " B Daughter: " << (*genParticles_)[p].daughter(d)->pdgId() 
+//                       << " status: " << (*genParticles_)[p].daughter(d)->status() << std::endl;
+             if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 12 
+               || abs((*genParticles_)[p].daughter(d)->pdgId()) == 14 
+               || abs((*genParticles_)[p].daughter(d)->pdgId()) == 16 ) {continue;} 
+             if ( (*genParticles_)[p].daughter(d)->pdgId() == 443 ) { 
+// Loop over jpsi daughters & get the two mus. if there aren't two mus then skip it
+                for ( unsigned int jd=0; jd<(*genParticles_)[p].daughter(d)->numberOfDaughters(); ++jd ) {
+//                    std::cout<<"J/psi Daughter: " << (*genParticles_)[p].daughter(d)->daughter(jd)->pdgId() << std::endl;
+                    if ( (*genParticles_)[p].daughter(d)->daughter(jd)->pdgId() == 13 ) {
+                       mu1.SetPtEtaPhiM((*genParticles_)[p].daughter(d)->daughter(jd)->pt(),
+                                        (*genParticles_)[p].daughter(d)->daughter(jd)->eta(),
+                                        (*genParticles_)[p].daughter(d)->daughter(jd)->phi(), 
+                                        (*genParticles_)[p].daughter(d)->daughter(jd)->mass());
+                       } 
+                    else if ( (*genParticles_)[p].daughter(d)->daughter(jd)->pdgId() == -13 ) {
+                       mu2.SetPtEtaPhiM((*genParticles_)[p].daughter(d)->daughter(jd)->pt(), 
+                                        (*genParticles_)[p].daughter(d)->daughter(jd)->eta(),
+                                        (*genParticles_)[p].daughter(d)->daughter(jd)->phi(), 
+                                        (*genParticles_)[p].daughter(d)->daughter(jd)->mass());
+                       }
+                    }
+                 } 
+             }
+          if (mu1.Pt() > 0 && mu2.Pt() > 0) {
+//             std::cout<<"Muon pT 1: " << mu1.Pt() << " Muon pT 2: " << mu2.Pt() << std::endl;
+             for (unsigned int d=0; d<(*genParticles_)[p].numberOfDaughters(); ++d ) {
+//                  std::cout << (*genParticles_)[p].daughter(d)->pdgId() <<
+//                  " Particle Status: " << (*genParticles_)[p].daughter(d)->status() << std::endl;
+//                  std::cout<<"Particle: "<< (*genParticles_)[p].daughter(d)->pdgId()<<std::endl;
+//	            for (unsigned int m=0; m<(*genParticles_)[p].daughter(d)->numberOfMothers(); ++m) {
+//	                std::cout<<"Particle Mother: "<< (*genParticles_)[p].daughter(d)->mother(m)->pdgId()<<std::endl;
+//	                }
+//                  for (unsigned int xd=0; xd<(*genParticles_)[p].numberOfDaughters(); ++xd) {
+//                      std::cout << "X daughter: " << (*genParticles_)[p].daughter(d)->daughter(xd)->pdgId() 
+//                                << " Status: " << (*genParticles_)[p].daughter(d)->daughter(xd)->status() << std::endl;
+//                      }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 12 
+                    || abs((*genParticles_)[p].daughter(d)->pdgId()) == 14 
+                    || abs((*genParticles_)[p].daughter(d)->pdgId()) == 16 ) {continue;} 
+                  if ( (*genParticles_)[p].daughter(d)->pdgId() == 443 ) {continue;}
+//                  nBranches_->genParticle_Bdau_X_pdgId.push_back(
+//                                    (*genParticles_)[p].daughter(d)->pdgId());
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 13) { 
+                  //mu+
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(0); 
+                  }
+                  if ( (*genParticles_)[p].daughter(d)->pdgId() == 111) { 
+                  //pi0
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(1); 
+                  }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 211) { 
+                  //pi+
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(2); 
+                  }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 113) { 
+                  //rho0
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(3); 
+                  }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 213) { 
+                  //rho+
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(4); 
+                  }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 221) { 
+                  //eta
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(5); 
+                  }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 331) { 
+                  //eta'
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(6); 
+                  }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 223) { 
+                  //omega
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(7); 
+                  }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 333) { 
+                  //phi
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(8); 
+                  }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 311) { 
+                  //K0
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(9); 
+                  }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 321) { 
+                  //K+
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(10); 
+                  }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 313) { 
+                  //K*0
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(11); 
+                  }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 323) { 
+                  //K*+
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(12); 
+                  }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 411) { 
+                  //D+
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(13); 
+                  }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 421) { 
+                  //D0
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(14); 
+                  }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 441) { 
+                  //eta_c
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(15); 
+                  }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 551) { 
+                  //eta_b
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(16); 
+                  }
+                  if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 553) { 
+                  //Gamma
+                  nBranches_->genParticle_Bdau_X_pdgId->Fill(17); 
+                  }
+                  TLorentzVector temp;
+                  temp.SetPtEtaPhiM((*genParticles_)[p].daughter(d)->pt(),
+                                    (*genParticles_)[p].daughter(d)->eta(),
+                                    (*genParticles_)[p].daughter(d)->phi(),
+                                    (*genParticles_)[p].daughter(d)->mass());
+                  mu3 += temp;
+                  }
+             if (mu3.Pt() > 0) {
+                nBranches_->genParticle_Bdau_X_pt->Fill(mu3.Pt()); 
+                nBranches_->genParticle_Bdau_X_eta->Fill(mu3.Eta()); 
+                nBranches_->genParticle_Bdau_X_phi->Fill(mu3.Phi()); 
+                nBranches_->genParticle_Bdau_mu1_pt->Fill(mu1.Pt()); 
+                nBranches_->genParticle_Bdau_mu1_eta->Fill(mu1.Eta()); 
+                nBranches_->genParticle_Bdau_mu1_phi->Fill(mu1.Phi()); 
+                nBranches_->genParticle_Bdau_mu2_pt->Fill(mu2.Pt()); 
+                nBranches_->genParticle_Bdau_mu2_eta->Fill(mu2.Eta()); 
+                nBranches_->genParticle_Bdau_mu2_phi->Fill(mu2.Phi()); 
+                nBranches_->genParticle_Bdau_Jpsi_mass->Fill((mu1+mu2).M()); 
+                nBranches_->genParticle_Bdau_Jpsi_pt->Fill((mu1+mu2).Pt()); 
+                nBranches_->genParticle_Bdau_Jpsi_eta->Fill((mu1+mu2).Eta()); 
+                nBranches_->genParticle_Bdau_Jpsi_phi->Fill((mu1+mu2).Phi()); 
+                nBranches_->genParticle_Bvis_mass->Fill((mu1+mu2+mu3).M()); 
+                nBranches_->genParticle_Bvis_pt->Fill((mu1+mu2+mu3).Pt()); 
+                nBranches_->genParticle_Bvis_eta->Fill((mu1+mu2+mu3).Eta()); 
+                nBranches_->genParticle_Bvis_phi->Fill((mu1+mu2+mu3).Phi()); 
+//                nBranches_->genParticle_Bdau_X_pt.push_back(mu3.Pt());
+//                nBranches_->genParticle_Bdau_X_eta.push_back(mu3.Eta());
+//                nBranches_->genParticle_Bdau_X_phi.push_back(mu3.Phi());
+//                nBranches_->genParticle_Bdau_mu1_pt.push_back(mu1.Pt());
+//                nBranches_->genParticle_Bdau_mu1_eta.push_back(mu1.Eta());
+//                nBranches_->genParticle_Bdau_mu1_phi.push_back(mu1.Phi());
+//                nBranches_->genParticle_Bdau_mu2_pt.push_back(mu2.Pt());
+//                nBranches_->genParticle_Bdau_mu2_eta.push_back(mu2.Eta());
+//                nBranches_->genParticle_Bdau_mu2_phi.push_back(mu2.Phi());
+//                nBranches_->genParticle_Bdau_Jpsi_pt.push_back((mu1+mu2).Pt());
+//                nBranches_->genParticle_Bdau_Jpsi_eta.push_back((mu1+mu2).Eta());
+//                nBranches_->genParticle_Bdau_Jpsi_phi.push_back((mu1+mu2).Phi());
+//                nBranches_->genParticle_Bdau_Jpsi_mass.push_back((mu1+mu2).M());
+//                nBranches_->genParticle_Bvis_pt.push_back((mu1+mu2+mu3).Pt());
+//                nBranches_->genParticle_Bvis_eta.push_back((mu1+mu2+mu3).Eta());
+//                nBranches_->genParticle_Bvis_phi.push_back((mu1+mu2+mu3).Phi());
+//                nBranches_->genParticle_Bvis_mass.push_back((mu1+mu2+mu3).M());
+                }
+             }
+         }
+}
 
       if(abs((*genParticles_)[p].pdgId())==15 && (*genParticles_)[p].statusFlags().isPrompt() && (*genParticles_)[p].status()==2){
 
