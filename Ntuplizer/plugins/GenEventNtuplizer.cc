@@ -7,7 +7,7 @@ GenEventNtuplizer::GenEventNtuplizer( std::vector< edm::EDGetTokenT< GenEventInf
    , lheEventProductToken_( tokens_lhe[0])
    , isJpsiMu_( runFlags["doJpsiMu"]  )
    , isJpsiEle_( runFlags["doJpsiEle"]  )
-   , isGenHisto_( runFlags["doGenHisto"] )
+   , isGenHisto_( runFlags["doGenHist"] )
 {
 
 }

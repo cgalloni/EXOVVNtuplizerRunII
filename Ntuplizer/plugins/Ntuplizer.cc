@@ -99,7 +99,6 @@ Ntuplizer::Ntuplizer(const edm::ParameterSet& iConfig):
   std::cout << "jecpath  "<< jecpath  <<std::endl;
   nBranches_ = new NtupleBranches( runFlags, tree );
 
-std::cout << "Naming Histos" << std::endl;
 if ( runFlags["doCutFlow"] ){
    nBranches_->cutflow_perevt->GetXaxis()->SetBinLabel(1,"Pre-Cut");
    nBranches_->cutflow_perevt->GetXaxis()->SetBinLabel(2,"Passing p_{T} & #eta cut for #mu_{1} & #mu_{2}");
@@ -111,60 +110,24 @@ if ( runFlags["doCutFlow"] ){
    }
 //
  if ( runFlags["doGenHist"] ){
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(1, "#mu");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(2, "#pi^{0}");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(3, "#pi^{#pm}");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(4, "#rho^{0}");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(5, "#rho^{#pm}");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(6, "#eta");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(7, "#eta^{`}");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(8, "#omega");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(9, "#phi");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(10, "K^{0}");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(11, "K^{#pm}");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(12, "K^{*0}");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(13, "K^{*#pm}");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(14, "D^{#pm}");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(15, "D^{0}");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(16, "#eta_{c}");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(17, "#eta_{b}");
-    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetBinLabel(18, "#Upsilon");
-//    nBranches_->genParticle_Bdau_X_pdgId->SetTitle("Gen Level X PDGID in B->J/#psi+X");
-//    nBranches_->genParticle_Bdau_X_pdgId->GetXaxis()->SetTitle("PDGID");
-//    nBranches_->genParticle_Bdau_X_pt->SetTitle("Gen Level X p_{T} in B->J/#psi+X");
-//    nBranches_->genParticle_Bdau_X_pt->GetXaxis()->SetTitle("p_{T} (GeV)");
-//    nBranches_->genParticle_Bdau_X_eta->SetTitle("Gen Level X #eta in B->J/#psi+X");
-//    nBranches_->genParticle_Bdau_X_eta->GetXaxis()->SetTitle("#eta");
-//    nBranches_->genParticle_Bdau_X_phi->SetTitle("Gen Level X #phi in B->J/#psi+X");
-//    nBranches_->genParticle_Bdau_X_phi->GetXaxis()->SetTitle("#phi");
-//    nBranches_->genParticle_Bdau_mu1_pt->SetTitle("Gen Level #mu_{J/#psi,1} p_{T} in B->J/#psi+X");
-//    nBranches_->genParticle_Bdau_mu1_pt->GetXaxis()->SetTitle("p_{T} (GeV)");
-//    nBranches_->genParticle_Bdau_mu1_eta->SetTitle("Gen Level #mu_{J/#psi,1} #eta in B->J/#psi+X");
-//    nBranches_->genParticle_Bdau_mu1_eta->GetXaxis()->SetTitle("#eta");
-//    nBranches_->genParticle_Bdau_mu1_phi->SetTitle("Gen Level #mu_{J/#psi,1} #phi in B->J/#psi+X");
-//    nBranches_->genParticle_Bdau_mu1_phi->GetXaxis()->SetTitle("#phi");
-//    nBranches_->genParticle_Bdau_mu2_pt->SetTitle("Gen Level #mu_{J/#psi,2} p_{T} in B->J/#psi+X");
-//    nBranches_->genParticle_Bdau_mu2_pt->GetXaxis()->SetTitle("p_{T} (GeV)");
-//    nBranches_->genParticle_Bdau_mu2_eta->SetTitle("Gen Level #mu_{J/#psi,2} #eta in B->J/#psi+X");
-//    nBranches_->genParticle_Bdau_mu2_eta->GetXaxis()->SetTitle("#eta");
-//    nBranches_->genParticle_Bdau_mu2_phi->SetTitle("Gen Level #mu_{J/#psi,2} #phi in B->J/#psi+X");
-//    nBranches_->genParticle_Bdau_mu2_phi->GetXaxis()->SetTitle("#phi");
-//    nBranches_->genParticle_Bdau_Jpsi_pt->SetTitle("Gen Level J/#psi p_{T} in B->J/#psi+X");
-//    nBranches_->genParticle_Bdau_Jpsi_pt->GetXaxis()->SetTitle("p_{T} (GeV)");
-//    nBranches_->genParticle_Bdau_Jpsi_eta->SetTitle("Gen Level J/#psi #eta in B->J/#psi+X");
-//    nBranches_->genParticle_Bdau_Jpsi_eta->GetXaxis()->SetTitle("#eta");
-//    nBranches_->genParticle_Bdau_Jpsi_phi->SetTitle("Gen Level J/#psi #phi in B->J/#psi+X");
-//    nBranches_->genParticle_Bdau_Jpsi_phi->GetXaxis()->SetTitle("#phi");
-//    nBranches_->genParticle_Bdau_Jpsi_mass->SetTitle("Gen Level J/#psi mass in B->J/#psi+X");
-//    nBranches_->genParticle_Bdau_Jpsi_mass->GetXaxis()->SetTitle("Mass (GeV)");
-//    nBranches_->genParticle_Bvis_pt->SetTitle("Gen Level Visible B p_{T} in B->J/#psi+X");
-//    nBranches_->genParticle_Bvis_pt->GetXaxis()->SetTitle("p_{T} (GeV)");
-//    nBranches_->genParticle_Bvis_eta->SetTitle("Gen Level Visible B #eta in B->J/#psi+X");
-//    nBranches_->genParticle_Bvis_eta->GetXaxis()->SetTitle("#eta");
-//    nBranches_->genParticle_Bvis_phi->SetTitle("Gen Level Visible B #phi in B->J/#psi+X");
-//    nBranches_->genParticle_Bvis_phi->GetXaxis()->SetTitle("#phi");
-//    nBranches_->genParticle_Bvis_mass->SetTitle("Gen Level Visible B mass in B->J/#psi+X");
-//    nBranches_->genParticle_Bvis_mass->GetXaxis()->SetTitle("Mass (GeV)");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(1, "#mu");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(2, "#pi^{0}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(3, "#pi^{#pm}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(4, "#rho^{0}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(5, "#rho^{#pm}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(6, "#eta");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(7, "#eta^{`}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(8, "#omega");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(9, "#phi");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(10, "K^{0}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(11, "K^{#pm}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(12, "K^{*0}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(13, "K^{*#pm}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(14, "D^{#pm}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(15, "D^{0}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(16, "#eta_{c}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(17, "#eta_{b}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(18, "#Upsilon");
     }
   /*=======================================================================================*/
 // std::cout << "Histos Named" << std::endl;
@@ -209,7 +172,6 @@ if ( runFlags["doCutFlow"] ){
 
 						      
   if (runFlags["doVertices"]) {
-    std::cout<<"\n\n --->DOING MET<---\n\n"<<std::endl;
     nTuplizers_["vertices"] = new VerticesNtuplizer( vtxTokens   , 
 						     beamToken_,
                                                      nBranches_  ,
@@ -318,10 +280,9 @@ void Ntuplizer::beginJob(){
 
 ///////////////////////////////////////////////////////////////////////////////////
 void Ntuplizer::endJob() {
-std::cout << "Saving Histos" << std::endl;
 if ( nBranches_->genParticle_Bdau_X_pt->GetEntries() > 0 ) {
-   nBranches_->genParticle_Bdau_X_pdgId->Draw();
-   nBranches_->genParticle_Bdau_X_pdgId->Write();
+   nBranches_->genParticle_Bdau_X_Id->Draw();
+   nBranches_->genParticle_Bdau_X_Id->Write();
    nBranches_->genParticle_Bdau_X_pt->Draw();
    nBranches_->genParticle_Bdau_X_pt->Write();
    nBranches_->genParticle_Bdau_X_eta->Draw();
@@ -361,12 +322,7 @@ if ( nBranches_->cutflow_perevt->GetEntries() > 0 ) {
    nBranches_->cutflow_perevt->Draw();
    nBranches_->cutflow_perevt->Write();
    }
-std::cout << "Histos Saved" << std::endl;
 
-//if ( failhist->GetEntries()>0 ){
-//   failhist->Draw();
-//   failhist->Write();
-//   }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

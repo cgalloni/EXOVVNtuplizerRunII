@@ -52,7 +52,7 @@ public:
   TH1F* cutflow_perevt = new TH1F("cutflow_perevt", "Per Event Ntuplizer Cutflow", 7, 0, 7);
 
   /** genParticles */
-  TH1F* genParticle_Bdau_X_pdgId = new TH1F("genParticle_Bdau_X_pdgId", "Identity of X in B->J/#psi+X", 18, 0, 17);
+  TH1F* genParticle_Bdau_X_Id = new TH1F("genParticle_Bdau_X_Id", "Identity of X in B->J/#psi+X", 18, 0, 17);
   TH1F* genParticle_Bdau_X_pt = new TH1F("genParticle_Bdau_X_pt", "p_{T} of X in B->J/#psi+X", 100, 0, 20);
   TH1F* genParticle_Bdau_X_eta = new TH1F("genParticle_Bdau_X_eta", "#eta of X in B->J/#psi+X", 10, -2.4, 2.4);
   TH1F* genParticle_Bdau_X_phi = new TH1F("genParticle_Bdau_X_phi", "#phi of X in B->J/#psi+X", 40, -3.2, 3.2);

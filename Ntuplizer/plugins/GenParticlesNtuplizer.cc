@@ -92,21 +92,11 @@ if ( isGenHist_ ) {
 // Looking At B mesons who decay to Jpsi+X. Catalogue what else they decay to in addition to the Jpsi. Get the particle's pdgid,
 // the pT, eta, and phi of it and the two muons from the jpsi, the jpsi's (aka dimuon) pt, eta, phi, and mass, and the B's
 // Visible pt, eta, phi, and mass
-      if ( (  abs((*genParticles_)[p].pdgId()) == 511
-           || abs((*genParticles_)[p].pdgId()) == 521 
-           || abs((*genParticles_)[p].pdgId()) == 513 
-           || abs((*genParticles_)[p].pdgId()) == 523 
-           || abs((*genParticles_)[p].pdgId()) == 515 
-           || abs((*genParticles_)[p].pdgId()) == 525 
-           || abs((*genParticles_)[p].pdgId()) == 531 
-           || abs((*genParticles_)[p].pdgId()) == 533 
-           || abs((*genParticles_)[p].pdgId()) == 535 
-           || abs((*genParticles_)[p].pdgId()) == 541 
-           || abs((*genParticles_)[p].pdgId()) == 543 
-           || abs((*genParticles_)[p].pdgId()) == 545 )
+      if ( (  abs((*genParticles_)[p].pdgId()) >= 500
+           && abs((*genParticles_)[p].pdgId()) < 600 )
          && (*genParticles_)[p].status() == 2 ) {
-         TLorentzVector mu1, mu2, mu3;
-         std::vector<int> mu3pdgid;
+         TLorentzVector mu1, mu2, X;
+         std::vector<int> Xpdgid;
          for (unsigned int d=0; d<(*genParticles_)[p].numberOfDaughters(); ++d ) {
 //             std::cout << p << " B Daughter: " << (*genParticles_)[p].daughter(d)->pdgId() 
 //                       << " status: " << (*genParticles_)[p].daughter(d)->status() << std::endl;
@@ -149,91 +139,92 @@ if ( isGenHist_ ) {
                     || abs((*genParticles_)[p].daughter(d)->pdgId()) == 14 
                     || abs((*genParticles_)[p].daughter(d)->pdgId()) == 16 ) {continue;} 
                   if ( (*genParticles_)[p].daughter(d)->pdgId() == 443 ) {continue;}
-//                  nBranches_->genParticle_Bdau_X_pdgId.push_back(
+//                  nBranches_->genParticle_Bdau_X_Id.push_back(
 //                                    (*genParticles_)[p].daughter(d)->pdgId());
+//                Bins labeled in Ntuplizer.cc
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 13) { 
                   //mu+
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(0); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(0); 
                   }
                   if ( (*genParticles_)[p].daughter(d)->pdgId() == 111) { 
                   //pi0
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(1); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(1); 
                   }
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 211) { 
                   //pi+
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(2); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(2); 
                   }
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 113) { 
                   //rho0
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(3); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(3); 
                   }
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 213) { 
                   //rho+
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(4); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(4); 
                   }
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 221) { 
                   //eta
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(5); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(5); 
                   }
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 331) { 
                   //eta'
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(6); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(6); 
                   }
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 223) { 
                   //omega
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(7); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(7); 
                   }
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 333) { 
                   //phi
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(8); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(8); 
                   }
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 311) { 
                   //K0
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(9); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(9); 
                   }
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 321) { 
                   //K+
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(10); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(10); 
                   }
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 313) { 
                   //K*0
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(11); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(11); 
                   }
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 323) { 
                   //K*+
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(12); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(12); 
                   }
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 411) { 
                   //D+
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(13); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(13); 
                   }
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 421) { 
                   //D0
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(14); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(14); 
                   }
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 441) { 
                   //eta_c
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(15); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(15); 
                   }
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 551) { 
                   //eta_b
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(16); 
+                  nBranches_->genParticle_Bdau_X_Id->Fill(16); 
                   }
                   if ( abs((*genParticles_)[p].daughter(d)->pdgId()) == 553) { 
-                  //Gamma
-                  nBranches_->genParticle_Bdau_X_pdgId->Fill(17); 
+                  //Upsilon
+                  nBranches_->genParticle_Bdau_X_Id->Fill(17); 
                   }
                   TLorentzVector temp;
                   temp.SetPtEtaPhiM((*genParticles_)[p].daughter(d)->pt(),
                                     (*genParticles_)[p].daughter(d)->eta(),
                                     (*genParticles_)[p].daughter(d)->phi(),
                                     (*genParticles_)[p].daughter(d)->mass());
-                  mu3 += temp;
+                  X += temp;
                   }
-             if (mu3.Pt() > 0) {
-                nBranches_->genParticle_Bdau_X_pt->Fill(mu3.Pt()); 
-                nBranches_->genParticle_Bdau_X_eta->Fill(mu3.Eta()); 
-                nBranches_->genParticle_Bdau_X_phi->Fill(mu3.Phi()); 
+             if (X.Pt() > 0) {
+                nBranches_->genParticle_Bdau_X_pt->Fill(X.Pt()); 
+                nBranches_->genParticle_Bdau_X_eta->Fill(X.Eta()); 
+                nBranches_->genParticle_Bdau_X_phi->Fill(X.Phi()); 
                 nBranches_->genParticle_Bdau_mu1_pt->Fill(mu1.Pt()); 
                 nBranches_->genParticle_Bdau_mu1_eta->Fill(mu1.Eta()); 
                 nBranches_->genParticle_Bdau_mu1_phi->Fill(mu1.Phi()); 
@@ -244,27 +235,10 @@ if ( isGenHist_ ) {
                 nBranches_->genParticle_Bdau_Jpsi_pt->Fill((mu1+mu2).Pt()); 
                 nBranches_->genParticle_Bdau_Jpsi_eta->Fill((mu1+mu2).Eta()); 
                 nBranches_->genParticle_Bdau_Jpsi_phi->Fill((mu1+mu2).Phi()); 
-                nBranches_->genParticle_Bvis_mass->Fill((mu1+mu2+mu3).M()); 
-                nBranches_->genParticle_Bvis_pt->Fill((mu1+mu2+mu3).Pt()); 
-                nBranches_->genParticle_Bvis_eta->Fill((mu1+mu2+mu3).Eta()); 
-                nBranches_->genParticle_Bvis_phi->Fill((mu1+mu2+mu3).Phi()); 
-//                nBranches_->genParticle_Bdau_X_pt.push_back(mu3.Pt());
-//                nBranches_->genParticle_Bdau_X_eta.push_back(mu3.Eta());
-//                nBranches_->genParticle_Bdau_X_phi.push_back(mu3.Phi());
-//                nBranches_->genParticle_Bdau_mu1_pt.push_back(mu1.Pt());
-//                nBranches_->genParticle_Bdau_mu1_eta.push_back(mu1.Eta());
-//                nBranches_->genParticle_Bdau_mu1_phi.push_back(mu1.Phi());
-//                nBranches_->genParticle_Bdau_mu2_pt.push_back(mu2.Pt());
-//                nBranches_->genParticle_Bdau_mu2_eta.push_back(mu2.Eta());
-//                nBranches_->genParticle_Bdau_mu2_phi.push_back(mu2.Phi());
-//                nBranches_->genParticle_Bdau_Jpsi_pt.push_back((mu1+mu2).Pt());
-//                nBranches_->genParticle_Bdau_Jpsi_eta.push_back((mu1+mu2).Eta());
-//                nBranches_->genParticle_Bdau_Jpsi_phi.push_back((mu1+mu2).Phi());
-//                nBranches_->genParticle_Bdau_Jpsi_mass.push_back((mu1+mu2).M());
-//                nBranches_->genParticle_Bvis_pt.push_back((mu1+mu2+mu3).Pt());
-//                nBranches_->genParticle_Bvis_eta.push_back((mu1+mu2+mu3).Eta());
-//                nBranches_->genParticle_Bvis_phi.push_back((mu1+mu2+mu3).Phi());
-//                nBranches_->genParticle_Bvis_mass.push_back((mu1+mu2+mu3).M());
+                nBranches_->genParticle_Bvis_mass->Fill((mu1+mu2+X).M()); 
+                nBranches_->genParticle_Bvis_pt->Fill((mu1+mu2+X).Pt()); 
+                nBranches_->genParticle_Bvis_eta->Fill((mu1+mu2+X).Eta()); 
+                nBranches_->genParticle_Bvis_phi->Fill((mu1+mu2+X).Phi()); 
                 }
              }
          }

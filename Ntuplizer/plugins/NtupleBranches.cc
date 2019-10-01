@@ -18,24 +18,6 @@ void NtupleBranches::branch( std::map< std::string, bool >& runFlags ){
   if ( runFlags["runOnMC"] ){
     if ( runFlags["doGenParticles"] ){
       /** genParticles */
-//      tree_->Branch( "genParticle_Bdau_X_pdgId"		, &genParticle_Bdau_X_pdgId);
-//      tree_->Branch( "genParticle_Bdau_X_pt"		, &genParticle_Bdau_X_pt);
-//      tree_->Branch( "genParticle_Bdau_X_eta"		, &genParticle_Bdau_X_eta);
-//      tree_->Branch( "genParticle_Bdau_X_phi"		, &genParticle_Bdau_X_phi);
-//      tree_->Branch( "genParticle_Bdau_mu1_pt"		, &genParticle_Bdau_mu1_pt);
-//      tree_->Branch( "genParticle_Bdau_mu1_eta"		, &genParticle_Bdau_mu1_eta);
-//      tree_->Branch( "genParticle_Bdau_mu1_phi"		, &genParticle_Bdau_mu1_phi);
-//      tree_->Branch( "genParticle_Bdau_mu2_pt"		, &genParticle_Bdau_mu2_pt);
-//      tree_->Branch( "genParticle_Bdau_mu2_eta"		, &genParticle_Bdau_mu2_eta);
-//      tree_->Branch( "genParticle_Bdau_mu2_phi"		, &genParticle_Bdau_mu2_phi);
-//      tree_->Branch( "genParticle_Bdau_Jpsi_pt"		, &genParticle_Bdau_Jpsi_pt);
-//      tree_->Branch( "genParticle_Bdau_Jpsi_eta"	, &genParticle_Bdau_Jpsi_eta);
-//      tree_->Branch( "genParticle_Bdau_Jpsi_phi"	, &genParticle_Bdau_Jpsi_phi);
-//      tree_->Branch( "genParticle_Bdau_Jpsi_mass"	, &genParticle_Bdau_Jpsi_mass);
-//      tree_->Branch( "genParticle_Bvis_pt"		, &genParticle_Bvis_pt);
-//      tree_->Branch( "genParticle_Bvis_eta"		, &genParticle_Bvis_eta);
-//      tree_->Branch( "genParticle_Bvis_phi"		, &genParticle_Bvis_phi);
-//      tree_->Branch( "genParticle_Bvis_mass"		, &genParticle_Bvis_mass);
       tree_->Branch( "genParticle_N"	     , &genParticle_N	       );
       tree_->Branch( "genParticle_pt"	     , &genParticle_pt	       ); 
 //      tree_->Branch( "genParticle_px"	     , &genParticle_px	       ); 
@@ -313,24 +295,6 @@ void NtupleBranches::branch( std::map< std::string, bool >& runFlags ){
 void NtupleBranches::reset( void ){
 
   /** genParticle */
- // genParticle_Bdau_X_pdgId.clear();
- // genParticle_Bdau_X_pt.clear();
- // genParticle_Bdau_X_eta.clear();
- // genParticle_Bdau_X_phi.clear();
- // genParticle_Bdau_mu1_pt.clear();
- // genParticle_Bdau_mu1_eta.clear();
- // genParticle_Bdau_mu1_phi.clear();
- // genParticle_Bdau_mu2_pt.clear();
- // genParticle_Bdau_mu2_eta.clear();
- // genParticle_Bdau_mu2_phi.clear();
- // genParticle_Bdau_Jpsi_pt.clear();
- // genParticle_Bdau_Jpsi_eta.clear();
- // genParticle_Bdau_Jpsi_phi.clear();
- // genParticle_Bdau_Jpsi_mass.clear();
- // genParticle_Bvis_pt.clear();
- // genParticle_Bvis_eta.clear();
- // genParticle_Bvis_phi.clear();
- // genParticle_Bvis_mass.clear();
   genParticle_N = 0;
   genParticle_pt.clear();
 //  genParticle_px.clear();
