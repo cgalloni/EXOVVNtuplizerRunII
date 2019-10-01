@@ -47,8 +47,29 @@ public:
 
   //=================================================================================================================== 
   /* output tree variables*/
-    
+
+  /* Cutflow */
+  TH1F* cutflow_perevt = new TH1F("cutflow_perevt", "Per Event Ntuplizer Cutflow", 7, 0, 7);
+
   /** genParticles */
+  TH1F* genParticle_Bdau_X_Id = new TH1F("genParticle_Bdau_X_Id", "Identity of X in B->J/#psi+X", 18, 0, 17);
+  TH1F* genParticle_Bdau_X_pt = new TH1F("genParticle_Bdau_X_pt", "p_{T} of X in B->J/#psi+X", 100, 0, 20);
+  TH1F* genParticle_Bdau_X_eta = new TH1F("genParticle_Bdau_X_eta", "#eta of X in B->J/#psi+X", 10, -2.4, 2.4);
+  TH1F* genParticle_Bdau_X_phi = new TH1F("genParticle_Bdau_X_phi", "#phi of X in B->J/#psi+X", 40, -3.2, 3.2);
+  TH1F* genParticle_Bdau_mu1_pt = new TH1F("genParticle_Bdau_mu1_pt", "p_{T} of #mu_{J/#psi,1} in B->J/#psi+X", 50, 0, 10);
+  TH1F* genParticle_Bdau_mu1_eta = new TH1F("genParticle_Bdau_mu1_eta", "#eta of #mu_{J/#psi,1} in B->J/#psi+X", 10, -2.4, 2.4);
+  TH1F* genParticle_Bdau_mu1_phi = new TH1F("genParticle_Bdau_mu1_phi", "#phi of #mu_{J/#psi,1} in B->J/#psi+X", 40, -3.2, 3.2);
+  TH1F* genParticle_Bdau_mu2_pt = new TH1F("genParticle_Bdau_mu2_pt", "p_{T} of #mu_{J/#psi,2} in B->J/#psi+X", 50, 0, 10);
+  TH1F* genParticle_Bdau_mu2_eta = new TH1F("genParticle_Bdau_mu2_eta", "#eta of #mu_{J/#psi,2} in B->J/#psi+X", 10, -2.4, 2.4);
+  TH1F* genParticle_Bdau_mu2_phi = new TH1F("genParticle_Bdau_mu2_phi", "#phi of #mu_{J/#psi,2} in B->J/#psi+X", 40, -3.2, 3.2);
+  TH1F* genParticle_Bdau_Jpsi_pt = new TH1F("genParticle_Bdau_Jpsi_pt", "p_{T} of J/#psi in B->J/#psi+X", 100, 0, 20);
+  TH1F* genParticle_Bdau_Jpsi_eta = new TH1F("genParticle_Bdau_Jpsi_eta", "#eta of J/#psi in B->J/#psi+X", 10, -2.4, 2.4);
+  TH1F* genParticle_Bdau_Jpsi_phi = new TH1F("genParticle_Bdau_Jpsi_phi", "#phi of J/#psi in B->J/#psi+X", 40, -3.2, 3.2);
+  TH1F* genParticle_Bdau_Jpsi_mass = new TH1F("genParticle_Bdau_Jpsi_mass", "mass of J/#psi in B->J/#psi+X", 40, 0, 8);
+  TH1F* genParticle_Bvis_pt = new TH1F("genParticle_Bvis_pt", "Visible p_{T} of B in B->J/#psi+X", 100, 0, 20);
+  TH1F* genParticle_Bvis_eta = new TH1F("genParticle_Bvis_eta", "Visible #eta of B in B->J/#psi+X", 10, -2.4, 2.4);
+  TH1F* genParticle_Bvis_phi = new TH1F("genParticle_Bvis_phi", "Visible #phi of B in B->J/#psi+X", 40, -3.2, 3.2);
+  TH1F* genParticle_Bvis_mass = new TH1F("genParticle_Bvis_mass", "Visible mass of B in B->J/#psi+X", 50, 0, 10);
   int                             genParticle_N;
   std::vector<float>              genParticle_pt       ;
 //  std::vector<float>              genParticle_px       ;
@@ -293,7 +314,6 @@ public:
   
 private:
   TTree* tree_;
-
 };
 
 #endif // NtupleBranches_H

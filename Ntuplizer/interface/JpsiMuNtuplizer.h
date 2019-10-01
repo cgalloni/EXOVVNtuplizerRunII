@@ -84,7 +84,10 @@ struct track_entry_t {
  JpsiMuNtuplizer( edm::EDGetTokenT<pat::MuonCollection>    muonToken   , 
 		  edm::EDGetTokenT<reco::VertexCollection> verticeToken, 
 		  edm::EDGetTokenT<pat::PackedCandidateCollection> packedpfcandidatesToken,
-		  NtupleBranches* nBranches );
+                  edm::EDGetTokenT<edm::TriggerResults>    triggertoken,
+                  edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection> triggerobject,
+		  NtupleBranches* nBranches, 
+                  std::map< std::string, bool >&           runFlags );
   ~JpsiMuNtuplizer( void );
   std::tuple<Float_t, Float_t> vertexProb(const std::vector<reco::TransientTrack> &tracks);
   void getAllTracks(std::vector<track_entry_t> *out_vector, int onlyThisVertex);
@@ -103,6 +106,12 @@ private:
    edm::EDGetTokenT<pat::PackedCandidateCollection>   		packedpfcandidatesToken_;
 
    edm::Handle< std::vector<pat::PackedCandidate> > packedpfcandidates_   ;
+   edm::EDGetTokenT<edm::TriggerResults> 		     HLTtriggersToken_;
+   edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection>  triggerObjects_;
+
+   edm::Handle< edm::TriggerResults> 			     HLTtriggers_;
+   edm::Handle<pat::TriggerObjectStandAloneCollection>	     triggerObjects;
+
 
    edm::ESHandle<TransientTrackBuilder> builder;
    AdaptiveVertexFitter avf;
@@ -110,6 +119,9 @@ private:
    //BS part
    std::set<track_entry_t> fTrackIndices; // added tracks
    std::vector<HFDecayTreeTrackIterator> fSubVertices;
+   bool isCutFlow_;
+   bool isTriggerDecisions_;
+   bool isTriggerObjects_;
 };
 
 #endif // JpsiMuNtuplizer_H

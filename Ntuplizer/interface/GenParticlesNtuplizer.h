@@ -18,6 +18,7 @@ private:
    edm::Handle< reco::GenParticleCollection >  genParticles_;
    bool isJpsiMu_;
    bool isJpsiEle_;
+   bool isGenHist_;
 
 };
 

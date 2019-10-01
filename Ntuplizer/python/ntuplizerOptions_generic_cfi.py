@@ -27,6 +27,8 @@ config["DOMISSINGET"] = True
 config["DOMVAMET"] = False
 config["DOJPSIMU"] = True
 config["DOJPSIELE"] = False
+config["DOGENHIST"] = True
+config["DOCUTFLOW"] = True
 
 #--------- MET reclustering ----------#
 config["DOMETRECLUSTERING"] = False

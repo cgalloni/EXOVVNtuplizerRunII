@@ -15,7 +15,6 @@ NtupleBranches::~NtupleBranches( void )
 //===================================================================================================================      
 void NtupleBranches::branch( std::map< std::string, bool >& runFlags ){
 
-
   if ( runFlags["runOnMC"] ){
     if ( runFlags["doGenParticles"] ){
       /** genParticles */

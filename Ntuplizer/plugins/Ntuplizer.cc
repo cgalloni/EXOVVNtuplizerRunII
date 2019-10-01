@@ -62,7 +62,7 @@ Ntuplizer::Ntuplizer(const edm::ParameterSet& iConfig):
   /*=======================================================================================*/
   edm::Service<TFileService> fs;
   TTree* tree = fs->make<TTree>( "tree", "tree" );
-  
+
   std::map< std::string, bool > runFlags;
   runFlags["runOnMC"] = iConfig.getParameter<bool>("runOnMC");
   runFlags["doGenParticles"] = iConfig.getParameter<bool>("doGenParticles");
@@ -77,6 +77,9 @@ Ntuplizer::Ntuplizer(const edm::ParameterSet& iConfig):
   runFlags["doMVAMET"] = iConfig.getParameter<bool>("doMVAMET");
   runFlags["doJpsiMu"] = iConfig.getParameter<bool>("doJpsiMu");
   runFlags["doJpsiEle"] = iConfig.getParameter<bool>("doJpsiEle");
+  runFlags["doGenHist"] = iConfig.getParameter<bool>("doGenHist");
+  runFlags["doCutFlow"] = iConfig.getParameter<bool>("doCutFlow");
+
 
   
   electronToken_	      	    =consumes<edm::View<pat::Electron> >(iConfig.getParameter<edm::InputTag>("electrons"));
@@ -95,8 +98,39 @@ Ntuplizer::Ntuplizer(const edm::ParameterSet& iConfig):
   //jecpath = std::string("data/") + jecpath;
   std::cout << "jecpath  "<< jecpath  <<std::endl;
   nBranches_ = new NtupleBranches( runFlags, tree );
-  
+
+if ( runFlags["doCutFlow"] ){
+   nBranches_->cutflow_perevt->GetXaxis()->SetBinLabel(1,"Pre-Cut");
+   nBranches_->cutflow_perevt->GetXaxis()->SetBinLabel(2,"Passing p_{T} & #eta cut for #mu_{1} & #mu_{2}");
+   nBranches_->cutflow_perevt->GetXaxis()->SetBinLabel(3,"Passing Soft cut for #mu_{1} & #mu_{2}");
+   nBranches_->cutflow_perevt->GetXaxis()->SetBinLabel(4,"#mu_{1} & #mu_{2} Make a believable J/#psi");
+   nBranches_->cutflow_perevt->GetXaxis()->SetBinLabel(5,"Event Triggered");
+   nBranches_->cutflow_perevt->GetXaxis()->SetBinLabel(6,"Event Passed Trigger matching");
+   nBranches_->cutflow_perevt->GetXaxis()->SetBinLabel(7,"Passing p_{T} cut for #mu_{3}");
+   }
+//
+ if ( runFlags["doGenHist"] ){
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(1, "#mu");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(2, "#pi^{0}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(3, "#pi^{#pm}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(4, "#rho^{0}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(5, "#rho^{#pm}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(6, "#eta");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(7, "#eta^{`}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(8, "#omega");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(9, "#phi");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(10, "K^{0}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(11, "K^{#pm}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(12, "K^{*0}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(13, "K^{*#pm}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(14, "D^{#pm}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(15, "D^{0}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(16, "#eta_{c}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(17, "#eta_{b}");
+    nBranches_->genParticle_Bdau_X_Id->GetXaxis()->SetBinLabel(18, "#Upsilon");
+    }
   /*=======================================================================================*/
+// std::cout << "Histos Named" << std::endl;
  
   /*=======================================================================================*/
   if (runFlags["doMissingEt"]) {
@@ -148,7 +182,10 @@ Ntuplizer::Ntuplizer(const edm::ParameterSet& iConfig):
     nTuplizers_["JpsiMu"] = new JpsiMuNtuplizer( muonToken_   , 
 						 vtxToken_   , 
 						 packedpfcandidatesToken_,
-						 nBranches_ );
+                                                 triggerToken_,
+                                                 triggerObjects_,
+						 nBranches_  ,
+                                                 runFlags    );
   }
   if (runFlags["doJpsiEle"]) {
     std::cout<<"\n\n --->GETTING INSIDE THE ELECTRON PART<---\n\n"<<std::endl;
@@ -243,6 +280,49 @@ void Ntuplizer::beginJob(){
 
 ///////////////////////////////////////////////////////////////////////////////////
 void Ntuplizer::endJob() {
+if ( nBranches_->genParticle_Bdau_X_pt->GetEntries() > 0 ) {
+   nBranches_->genParticle_Bdau_X_Id->Draw();
+   nBranches_->genParticle_Bdau_X_Id->Write();
+   nBranches_->genParticle_Bdau_X_pt->Draw();
+   nBranches_->genParticle_Bdau_X_pt->Write();
+   nBranches_->genParticle_Bdau_X_eta->Draw();
+   nBranches_->genParticle_Bdau_X_eta->Write();
+   nBranches_->genParticle_Bdau_X_phi->Draw();
+   nBranches_->genParticle_Bdau_X_phi->Write();
+   nBranches_->genParticle_Bdau_mu1_pt->Draw();
+   nBranches_->genParticle_Bdau_mu1_pt->Write();
+   nBranches_->genParticle_Bdau_mu1_eta->Draw();
+   nBranches_->genParticle_Bdau_mu1_eta->Write();
+   nBranches_->genParticle_Bdau_mu1_phi->Draw();
+   nBranches_->genParticle_Bdau_mu1_phi->Write();
+   nBranches_->genParticle_Bdau_mu2_pt->Draw();
+   nBranches_->genParticle_Bdau_mu2_pt->Write();
+   nBranches_->genParticle_Bdau_mu2_eta->Draw();
+   nBranches_->genParticle_Bdau_mu2_eta->Write();
+   nBranches_->genParticle_Bdau_mu2_phi->Draw();
+   nBranches_->genParticle_Bdau_mu2_phi->Write();
+   nBranches_->genParticle_Bdau_Jpsi_mass->Draw();
+   nBranches_->genParticle_Bdau_Jpsi_mass->Write();
+   nBranches_->genParticle_Bdau_Jpsi_pt->Draw();
+   nBranches_->genParticle_Bdau_Jpsi_pt->Write();
+   nBranches_->genParticle_Bdau_Jpsi_eta->Draw();
+   nBranches_->genParticle_Bdau_Jpsi_eta->Write();
+   nBranches_->genParticle_Bdau_Jpsi_phi->Draw();
+   nBranches_->genParticle_Bdau_Jpsi_phi->Write();
+   nBranches_->genParticle_Bvis_mass->Draw();
+   nBranches_->genParticle_Bvis_mass->Write();
+   nBranches_->genParticle_Bvis_pt->Draw();
+   nBranches_->genParticle_Bvis_pt->Write();
+   nBranches_->genParticle_Bvis_eta->Draw();
+   nBranches_->genParticle_Bvis_eta->Write();
+   nBranches_->genParticle_Bvis_phi->Draw();
+   nBranches_->genParticle_Bvis_phi->Write();
+   }
+if ( nBranches_->cutflow_perevt->GetEntries() > 0 ) {
+   nBranches_->cutflow_perevt->Draw();
+   nBranches_->cutflow_perevt->Write();
+   }
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
